@@ -1,15 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
 	private Rigidbody rb;
 	public float speed;
-	
-	void Start () {
-		rb = GetComponent<Rigidbody> ();
-	}
+    private int score;
+    public Text scoreText;
+    public Text winText;
 
+    void Start () {
+		rb = GetComponent<Rigidbody> ();
+        score = 0;
+        setScoreText();
+        winText.text = "";
+	}
+    
 	void FixedUpdate(){
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
@@ -24,6 +31,17 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.CompareTag("Pickup"))
         {
             other.gameObject.SetActive(false);
+            score++;
+            setScoreText();
+            if (score == 8)
+            {
+                winText.text = "You Win!";
+            }
         }
+    }
+
+    void setScoreText()
+    {
+        scoreText.text = "Score: " + score;
     }
 }
